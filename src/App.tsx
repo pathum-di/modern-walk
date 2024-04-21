@@ -1,15 +1,18 @@
 import "./App.css";
-import { Box, VStack } from "@chakra-ui/react";
-import NavBar from "./Components/NavBar";
+import { VStack } from "@chakra-ui/react";
+import NavBar from "./components/NavBar";
 import { Outlet } from "react-router-dom";
+import { fetchProducts } from "./api/Products";
+
+export async function loader() {
+  const flashSaleItems = await fetchProducts("asc", 4);
+  return { flashSaleItems };
+}
 
 function App() {
   return (
     <VStack>
-      <NavBar></NavBar>
-      <Box bg="tomato" w="100%" p={4} color="white">
-        This is the Box
-      </Box>
+      <NavBar />
       <Outlet />
     </VStack>
   );
