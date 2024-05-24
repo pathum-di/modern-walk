@@ -23,15 +23,17 @@ export const fetchProducts = async (
   }
 };
 
-export const fetchSingleProduct = async (
-  productId: number,
-): Promise<Product> => {
+export const fetchCategoryProducts = async (
+  categoryId: string,
+): Promise<Product[]> => {
   try {
-    const response = await fetch(`${PRODUCTS_API}/products/${productId}`);
-    const product: Product = await response.json();
-    return product;
+    const response = await fetch(
+      `${PRODUCTS_API}/products/category/${categoryId}?limit=4`,
+    );
+    const products: Product[] = await response.json();
+    return products;
   } catch (error) {
-    console.error("Error fetching product:", error);
+    console.error("Error fetching category products:", error);
     throw error;
   }
 };

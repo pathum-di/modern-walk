@@ -1,41 +1,38 @@
 import React from "react";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Root, { loader as rootLoader } from "./App.tsx";
+import Root from "./App.tsx";
 import ErrorPage from "./routes/error-page.tsx";
-import ItemDetails from "./routes/item-details.tsx";
-import Category from "./routes/category.tsx";
-import Home from "./routes/home.tsx";
-import MensClothing from "./routes/mens-clothing.tsx";
-import WomensClothing from "./routes/womens-clothing.tsx";
+import Category from "./routes/category-products.tsx";
+import Home, { homeLoader } from "./routes/home.tsx";
+import "./global.css";
+
+const theme = extendTheme({
+  styles: {
+    global: {
+      body: {
+        bg: "#f5f5f5",
+      },
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
-    loader: rootLoader,
+
     children: [
       {
-        path: "",
+        path: "/",
         element: <Home />,
+        loader: homeLoader,
       },
       {
         path: "category/:categoryId",
         element: <Category />,
-      },
-      {
-        path: "mens-clothing",
-        element: <MensClothing />,
-      },
-      {
-        path: "womens-clothing",
-        element: <WomensClothing />,
-      },
-      {
-        path: "item-details/:itemId",
-        element: <ItemDetails />,
       },
     ],
   },
@@ -43,7 +40,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <RouterProvider router={router} />
     </ChakraProvider>
   </React.StrictMode>,

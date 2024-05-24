@@ -1,19 +1,21 @@
-import "./App.css";
-import { VStack } from "@chakra-ui/react";
-import NavBar from "./components/NavBar";
-import { Outlet } from "react-router-dom";
-import { fetchProducts } from "./api/Products";
-
-export async function loader() {
-  const flashSaleItems = await fetchProducts("asc", 4);
-  return { flashSaleItems };
-}
+import { Box, Progress, VStack } from "@chakra-ui/react";
+import NavBar from "./Components/NavBar";
+import { Outlet, useNavigation } from "react-router-dom";
 
 function App() {
+  const navigation = useNavigation();
+
   return (
-    <VStack>
+    <VStack h={"100vh"} w={"100%"} alignItems={"center"} pb={"80px"}>
+      {navigation.state === "loading" ? (
+        <Progress size="xs" isIndeterminate w={"100%"} />
+      ) : (
+        <Box h={"4px"} w={"100%"} bg={"transparent"} />
+      )}
       <NavBar />
-      <Outlet />
+      <VStack w={"80%"}>
+        <Outlet />
+      </VStack>
     </VStack>
   );
 }
